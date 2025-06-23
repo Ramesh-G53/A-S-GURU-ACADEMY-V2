@@ -66,7 +66,6 @@ body {
 .nav-profile-img {
     width: 50px;
     height: 50px;
-    margin-top: 5px;
     border-radius: 50%;
     border: 1px solid #000;
     object-fit: cover;
@@ -214,6 +213,29 @@ body {
     gap: 0rem;
 }
 
+/* Hero Main Content - Desktop Layout */
+.hero-main {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Hero Left Section - 50% width on desktop */
+.hero-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+}
+
+/* Hero Right Section - 50% width on desktop */
+.hero-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Hero Top Section - Logo and Text */
 .hero-top {
     display: flex;
@@ -239,15 +261,15 @@ body {
 .hero-logo-circle {
     width: 140px;
     height: 140px;
-    border-radius: 8px; /* Changed from 50% to make it square */
+    border-radius: 8px;
     background: linear-gradient(135deg, #ff6b35, #f7931e);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2); /* Reduced shadow */
+    box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2);
     transition: all 0.3s ease;
     position: relative;
-    border: 2px solid rgba(255, 255, 255, 0.3); /* Reduced border */
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .hero-logo-circle:hover {
@@ -258,7 +280,7 @@ body {
 .hero-logo-img {
     width: 125px;
     height: 125px;
-    border-radius: 4px; /* Made square to match container */
+    border-radius: 4px;
     object-fit: cover;
 }
 
@@ -282,7 +304,7 @@ body {
 
 .hero-welcome {
     font-family: 'Dancing Script', cursive;
-    font-size: 3rem; /* Increased for desktop */
+    font-size: 3rem;
     color: #333;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -299,12 +321,12 @@ body {
 
 .hero-title-line1 {
     display: block;
-    font-size: 4rem; /* Increased for desktop */
+    font-size: 4rem;
 }
 
 .hero-title-line2 {
     display: block;
-    font-size: 4rem; /* Increased for desktop */
+    font-size: 4rem;
 }
 
 .hero-description {
@@ -312,10 +334,9 @@ body {
     color: #2d5a3d;
     font-weight: 700;
     line-height: 1.6;
-    max-width: 50%;
     word-wrap: break-word;
     margin-top: 0.7rem;
-    width: 100%; /* Full width from extreme left */
+    width: 100%;
     opacity: 0;
     transform: translateY(30px);
     animation: slideInUp 1s ease-out 1s forwards;
@@ -328,6 +349,52 @@ body {
     }
 }
 
+/* Hero Slideshow Styles - Updated for Zoom and Crossfade */
+.hero-slideshow {
+    width: 100%;
+    max-width: 500px;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s ease-out 1.2s forwards;
+}
+
+@keyframes slideInLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/2;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    background: #000;
+}
+
+.slide-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 1.2s ease-in-out, transform 3s ease-out;
+}
+
+.slide-image.active {
+    opacity: 1;
+}
+
+.slide-image.zoom-out {
+    transform: scale(1);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .navbar {
@@ -338,17 +405,16 @@ body {
     .nav-profile-img {
         width: 40px;
         height: 40px;
-        
     }
     
     .nav-menu {
-        margin-left: 55px; /* Reduced space for mobile */
+        margin-left: 55px;
     }
     
     .nav-left .nav-link {
-        padding: 0.75rem 0.6rem; /* Further reduced padding */
+        padding: 0.75rem 0.6rem;
         font-size: 0.85rem;
-        font-weight: 400; /* Reduced weight for mobile */
+        font-weight: 400;
     }
     
     /* Hide More button text, show hamburger */
@@ -373,17 +439,32 @@ body {
         min-height: 50vh;
     }
     
+    /* Change to vertical layout on mobile */
+    .hero-main {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem;
+    }
+    
+    .hero-left {
+        flex: none;
+    }
+    
+    .hero-right {
+        flex: none;
+        justify-content: stretch;
+    }
+    
     .hero-content {
         gap: 0rem;
     }
     
     .hero-top {
-        /* align-items: flex-start; */
         gap: 1rem;
     }
     
     .hero-logo-circle {
-        width: 80px; /* Adjusted for mobile */
+        width: 80px;
         height: 80px;
         border-radius: 6px;
         border: 1px solid rgba(255, 255, 255, 0.3);
@@ -400,27 +481,37 @@ body {
     }
     
     .hero-welcome {
-        font-size: 2.5rem; /* Increased for mobile */
+        font-size: 2.5rem;
         margin-bottom: 0.2rem;
     }
     
     .hero-title-line1,
     .hero-title-line2 {
-        font-size: 2.8rem; /* Increased for mobile */
+        font-size: 2.8rem;
     }
     
     .hero-description {
         font-size: 0.9rem;
         margin-top: 1rem;
-        max-width: 50%;
-        text-align: center; /* Centered on mobile */
-        padding: 0; /* No left padding to use full width */
+        text-align: center;
+        padding: 0;
+    }
+    
+    /* Mobile Slideshow */
+    .hero-slideshow {
+        width: 100%;
+        max-width: none;
+        margin: 0 auto;
+    }
+    
+    .slideshow-container {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
     }
 }
 
 @media (max-width: 480px) {
     .nav-left .nav-link {
-        padding: 0.75rem 0.4rem; /* Further reduced */
+        padding: 0.75rem 0.4rem;
         font-size: 0.8rem;
         font-weight: 400;
     }
@@ -439,7 +530,7 @@ body {
     }
     
     .hero {
-        padding: 100x 0.8rem 40px;
+        padding: 100px 0.8rem 40px;
     }
     
     .hero-logo-circle {
@@ -463,6 +554,5 @@ body {
     
     .hero-description {
         font-size: 0.85rem;
-        max-width: 100%;
     }
 }

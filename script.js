@@ -138,6 +138,44 @@ if (heroLogoCircle) {
     });
 }
 
+// Updated Image Slideshow Functionality - 3 seconds with zoom out and crossfade
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide-image');
+const totalSlides = slides.length;
+
+function showNextSlide() {
+    if (slides.length === 0) return;
+    
+    // Remove active and zoom-out classes from current slide
+    slides[currentSlide].classList.remove('active');
+    slides[currentSlide].classList.remove('zoom-out');
+    
+    // Move to next slide (loop back to first if at end)
+    currentSlide = (currentSlide + 1) % totalSlides;
+    
+    // Add active class to new slide and start zoom-out effect
+    slides[currentSlide].classList.add('active');
+    
+    // Add zoom-out class after a brief delay to ensure smooth transition
+    setTimeout(() => {
+        slides[currentSlide].classList.add('zoom-out');
+    }, 50);
+}
+
+// Initialize slideshow
+function initializeSlideshow() {
+    if (slides.length > 0) {
+        // Set first slide as active and add zoom-out effect
+        slides[0].classList.add('active');
+        setTimeout(() => {
+            slides[0].classList.add('zoom-out');
+        }, 100);
+        
+        // Start automatic slideshow every 3 seconds
+        setInterval(showNextSlide, 3000);
+    }
+}
+
 // Subtle parallax effect for hero section (reduced intensity)
 window.addEventListener('scroll', function() {
     const scrolled = window.pageYOffset;
@@ -157,6 +195,9 @@ window.addEventListener('scroll', function() {
 window.addEventListener('load', function() {
     // Remove any loading classes if present
     document.body.classList.add('loaded');
+    
+    // Initialize slideshow after page loads
+    initializeSlideshow();
     
     // Trigger any remaining animations
     setTimeout(() => {
