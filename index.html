@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AS Guru Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Profile Picture -->
+            <div class="nav-profile">
+                <img src="photos/p6.webp" alt="Profile" class="nav-profile-img">
+            </div>
+            
+            <!-- Navigation Menu -->
+            <ul class="nav-menu">
+                <div class="nav-left">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Contact us</a>
+                    </li>
+                </div>
+                <div class="nav-right">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link more-btn" id="moreBtn">More</a>
+                        <!-- Hamburger that replaces More button on mobile -->
+                        <div class="hamburger" id="hamburger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <ul class="dropdown-menu" id="dropdownMenu">
+                            <li><a href="#" class="dropdown-item">Events</a></li>
+                            <li><a href="#" class="dropdown-item">Videos</a></li>
+                            <li><a href="#" class="dropdown-item">Testimonials</a></li>
+                            <li><a href="#" class="dropdown-item">Admin</a></li>
+                        </ul>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <!-- Hero Top Section - Logo and Text -->
+                <div class="hero-top">
+                    <!-- Hero Logo -->
+                    <div class="hero-logo">
+                        <div class="hero-logo-circle">
+                            <img src="photos/logo.webp" alt="AS Guru Academy" class="hero-logo-img">
+                        </div>
+                    </div>
+
+                    <!-- Hero Text -->
+                    <div class="hero-text">
+                        <p class="hero-welcome">Welcome to</p>
+                        <h1 class="hero-title">
+                            <span class="hero-title-line1">A S GURU</span>
+                            <span class="hero-title-line2">ACADEMY</span>
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Hero Description - Full Width -->
+                <p class="hero-description">
+                    Unlock your full potential with the help of our self development programs and Activate your dreams!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
