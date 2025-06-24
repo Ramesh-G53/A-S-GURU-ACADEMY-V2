@@ -17,7 +17,6 @@ moreBtn.addEventListener('click', function(e) {
 
 // Close dropdown when clicking outside
 document.addEventListener('click', function(e) {
-    // Close dropdown if clicking outside
     if (!hamburger.contains(e.target) && !moreBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
         dropdownMenu.classList.remove('show');
         hamburger.classList.remove('active');
@@ -33,21 +32,8 @@ dropdownItems.forEach(item => {
     });
 });
 
-// Enhanced navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.9)';
-        navbar.style.boxShadow = 'none';
-    }
-});
-
 // Handle window resize
 window.addEventListener('resize', function() {
-    // Close dropdown when resizing
     dropdownMenu.classList.remove('show');
     hamburger.classList.remove('active');
 });
@@ -55,7 +41,6 @@ window.addEventListener('resize', function() {
 // Keyboard navigation support
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        // Close dropdown on Escape
         dropdownMenu.classList.remove('show');
         hamburger.classList.remove('active');
     }
@@ -65,14 +50,12 @@ document.addEventListener('keydown', function(e) {
 const dropdown = document.querySelector('.dropdown');
 
 dropdown.addEventListener('mouseenter', function() {
-    // Only show on hover if not on mobile
     if (window.innerWidth > 768) {
         dropdownMenu.classList.add('show');
     }
 });
 
 dropdown.addEventListener('mouseleave', function() {
-    // Only hide on mouse leave if not on mobile
     if (window.innerWidth > 768) {
         dropdownMenu.classList.remove('show');
     }
@@ -97,32 +80,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Intersection Observer for animations on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Observe cards for scroll animations
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `all 0.6s ease ${index * 0.2}s`;
-        observer.observe(card);
-    });
-});
-
 // Enhanced logo hover effects
 const heroLogoCircle = document.querySelector('.hero-logo-circle');
 
@@ -138,7 +95,7 @@ if (heroLogoCircle) {
     });
 }
 
-// Updated Image Slideshow Functionality - 3 seconds with zoom out and crossfade
+// Image Slideshow Functionality
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide-image');
 const totalSlides = slides.length;
@@ -176,37 +133,38 @@ function initializeSlideshow() {
     }
 }
 
-// Subtle parallax effect for hero section (reduced intensity)
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const heroLogo = document.querySelector('.hero-logo');
-    
-    if (hero && heroLogo && scrolled < window.innerHeight) {
-        const rate = scrolled * -0.3;
-        hero.style.transform = `translateY(${rate}px)`;
+// Scroll-triggered animations for mobile cards
+function initializeScrollAnimations() {
+    if (window.innerWidth <= 768) {
+        const cards = document.querySelectorAll('.activity-card');
         
-        // Subtle parallax for logo
-        heroLogo.style.transform = `translateY(${scrolled * -0.1}px) scale(1)`;
-    }
-});
-
-// Add loading states and smooth transitions
-window.addEventListener('load', function() {
-    // Remove any loading classes if present
-    document.body.classList.add('loaded');
-    
-    // Initialize slideshow after page loads
-    initializeSlideshow();
-    
-    // Trigger any remaining animations
-    setTimeout(() => {
-        const elementsToAnimate = document.querySelectorAll('[data-animate]');
-        elementsToAnimate.forEach(el => {
-            el.classList.add('animated');
+        // Add scroll animation class to cards on mobile
+        cards.forEach(card => {
+            card.classList.add('fade-in-on-scroll');
         });
-    }, 100);
-});
+        
+        // Intersection Observer for scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Stop observing once animated to prevent re-triggering
+                    scrollObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all cards
+        cards.forEach(card => {
+            scrollObserver.observe(card);
+        });
+    }
+}
 
 // Performance optimization: Throttle scroll events
 function throttle(func, delay) {
@@ -228,7 +186,7 @@ function throttle(func, delay) {
     };
 }
 
-// Apply throttling to scroll events
+// Navbar scroll effects with parallax
 const throttledScroll = throttle(function() {
     const navbar = document.querySelector('.navbar');
     const scrolled = window.pageYOffset;
@@ -252,5 +210,102 @@ const throttledScroll = throttle(function() {
     }
 }, 16); // ~60fps
 
-// Replace the scroll event listeners with throttled version
-window.addEventListener('scroll', throttledScroll);
+// Apply throttled scroll listener
+window.addEventListener('scroll', throttledScroll, { passive: true });
+
+// Handle window resize for responsive behavior
+window.addEventListener('resize', function() {
+    // Close dropdown when resizing
+    dropdownMenu.classList.remove('show');
+    hamburger.classList.remove('active');
+    
+    // Reinitialize scroll animations if switching to/from mobile
+    initializeScrollAnimations();
+});
+
+// Contact form submission (dummy functionality)
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Show success message (dummy)
+        alert('Thank you for your submission! We will get back to you soon.');
+        
+        // Reset form
+        this.reset();
+    });
+}
+
+// Page load initialization
+window.addEventListener('load', function() {
+    // Add loaded class to body
+    document.body.classList.add('loaded');
+    
+    // Initialize slideshow
+    initializeSlideshow();
+    
+    // Initialize scroll animations for mobile
+    initializeScrollAnimations();
+    
+    // Clear will-change properties after animations complete
+    setTimeout(() => {
+        const animatedElements = document.querySelectorAll('.hero-logo, .hero-text, .hero-description, .hero-slideshow');
+        animatedElements.forEach(el => {
+            el.style.willChange = 'auto';
+        });
+    }, 2000);
+});
+
+// DOM Content Loaded for immediate setup
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure smooth scrolling is enabled
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Preload critical animations
+    const criticalElements = document.querySelectorAll('.hero-logo, .hero-text, .get-started-btn');
+    criticalElements.forEach(el => {
+        el.style.willChange = 'transform, opacity';
+    });
+});
+
+// Touch event optimization for mobile
+if ('ontouchstart' in window) {
+    // Add touch-specific optimizations
+    document.body.style.webkitTouchCallout = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    
+    // Optimize touch scrolling
+    document.body.style.webkitOverflowScrolling = 'touch';
+}
+
+// Error handling for missing elements
+function safeQuerySelector(selector) {
+    try {
+        return document.querySelector(selector);
+    } catch (error) {
+        console.warn(`Element not found: ${selector}`);
+        return null;
+    }
+}
+
+// Enhanced error handling for slideshow
+function safeInitializeSlideshow() {
+    try {
+        const slideContainer = safeQuerySelector('.slideshow-container');
+        if (slideContainer && slides.length > 0) {
+            initializeSlideshow();
+        }
+    } catch (error) {
+        console.warn('Slideshow initialization failed:', error);
+    }
+}
+
+// Replace direct slideshow initialization
+window.addEventListener('load', function() {
+    safeInitializeSlideshow();
+});
