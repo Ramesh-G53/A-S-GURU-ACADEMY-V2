@@ -95,41 +95,83 @@ if (heroLogoCircle) {
     });
 }
 
-// Image Slideshow Functionality
+// Image Slideshow Functionality - Fixed to show all 6 images
 let currentSlide = 0;
-const slides = document.querySelectorAll('.slide-image');
-const totalSlides = slides.length;
+let slides = [];
+let slideshowInterval = null;
 
-function showNextSlide() {
-    if (slides.length === 0) return;
+function initializeSlideshow() {
+    // Get all slide images fresh each time
+    slides = document.querySelectorAll('.slide-image');
     
-    // Remove active and zoom-out classes from current slide
-    slides[currentSlide].classList.remove('active');
-    slides[currentSlide].classList.remove('zoom-out');
+    if (slides.length === 0) {
+        console.warn('No slide images found');
+        return;
+    }
     
-    // Move to next slide (loop back to first if at end)
-    currentSlide = (currentSlide + 1) % totalSlides;
+    console.log(`Found ${slides.length} slides`); // Debug log
     
-    // Add active class to new slide and start zoom-out effect
-    slides[currentSlide].classList.add('active');
+    // Reset all slides
+    slides.forEach((slide, index) => {
+        slide.classList.remove('active', 'zoom-out');
+        slide.style.opacity = '0';
+        slide.style.transform = 'scale(1.1)';
+    });
     
-    // Add zoom-out class after a brief delay to ensure smooth transition
-    setTimeout(() => {
-        slides[currentSlide].classList.add('zoom-out');
-    }, 50);
+    // Set first slide as active
+    currentSlide = 0;
+    if (slides[0]) {
+        slides[0].classList.add('active');
+        slides[0].style.opacity = '1';
+        
+        // Add zoom-out effect after a brief delay
+        setTimeout(() => {
+            if (slides[0]) {
+                slides[0].classList.add('zoom-out');
+                slides[0].style.transform = 'scale(1)';
+            }
+        }, 100);
+    }
+    
+    // Clear any existing interval
+    if (slideshowInterval) {
+        clearInterval(slideshowInterval);
+    }
+    
+    // Start automatic slideshow every 3 seconds
+    slideshowInterval = setInterval(showNextSlide, 3000);
 }
 
-// Initialize slideshow
-function initializeSlideshow() {
-    if (slides.length > 0) {
-        // Set first slide as active and add zoom-out effect
-        slides[0].classList.add('active');
-        setTimeout(() => {
-            slides[0].classList.add('zoom-out');
-        }, 100);
+function showNextSlide() {
+    if (slides.length === 0) {
+        console.warn('No slides available for transition');
+        return;
+    }
+    
+    // Remove active and zoom-out classes from current slide
+    if (slides[currentSlide]) {
+        slides[currentSlide].classList.remove('active', 'zoom-out');
+        slides[currentSlide].style.opacity = '0';
+        slides[currentSlide].style.transform = 'scale(1.1)';
+    }
+    
+    // Move to next slide (loop back to first if at end)
+    currentSlide = (currentSlide + 1) % slides.length;
+    
+    console.log(`Switching to slide ${currentSlide + 1} of ${slides.length}`); // Debug log
+    
+    // Add active class to new slide
+    if (slides[currentSlide]) {
+        slides[currentSlide].classList.add('active');
+        slides[currentSlide].style.opacity = '1';
         
-        // Start automatic slideshow every 3 seconds
-        setInterval(showNextSlide, 3000);
+        // Add zoom-out class after a brief delay to ensure smooth transition
+        setTimeout(() => {
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.add('zoom-out');
+                slides[currentSlide].style.transform = 'scale(1)';
+            }
+        }, 50);
     }
 }
 
@@ -235,20 +277,3 @@ function safeQuerySelector(selector) {
         return null;
     }
 }
-
-// Enhanced error handling for slideshow
-function safeInitializeSlideshow() {
-    try {
-        const slideContainer = safeQuerySelector('.slideshow-container');
-        if (slideContainer && slides.length > 0) {
-            initializeSlideshow();
-        }
-    } catch (error) {
-        console.warn('Slideshow initialization failed:', error);
-    }
-}
-
-// Replace direct slideshow initialization
-window.addEventListener('load', function() {
-    safeInitializeSlideshow();
-});
