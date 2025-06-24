@@ -133,39 +133,6 @@ function initializeSlideshow() {
     }
 }
 
-// Scroll-triggered animations for mobile cards
-function initializeScrollAnimations() {
-    if (window.innerWidth <= 768) {
-        const cards = document.querySelectorAll('.activity-card');
-        
-        // Add scroll animation class to cards on mobile
-        cards.forEach(card => {
-            card.classList.add('fade-in-on-scroll');
-        });
-        
-        // Intersection Observer for scroll-triggered animations
-        const observerOptions = {
-            threshold: 0.3,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    // Stop observing once animated to prevent re-triggering
-                    scrollObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all cards
-        cards.forEach(card => {
-            scrollObserver.observe(card);
-        });
-    }
-}
-
 // Performance optimization: Throttle scroll events
 function throttle(func, delay) {
     let timeoutId;
@@ -218,28 +185,7 @@ window.addEventListener('resize', function() {
     // Close dropdown when resizing
     dropdownMenu.classList.remove('show');
     hamburger.classList.remove('active');
-    
-    // Reinitialize scroll animations if switching to/from mobile
-    initializeScrollAnimations();
 });
-
-// Contact form submission (dummy functionality)
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-        
-        // Show success message (dummy)
-        alert('Thank you for your submission! We will get back to you soon.');
-        
-        // Reset form
-        this.reset();
-    });
-}
 
 // Page load initialization
 window.addEventListener('load', function() {
@@ -248,9 +194,6 @@ window.addEventListener('load', function() {
     
     // Initialize slideshow
     initializeSlideshow();
-    
-    // Initialize scroll animations for mobile
-    initializeScrollAnimations();
     
     // Clear will-change properties after animations complete
     setTimeout(() => {
